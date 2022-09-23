@@ -1,0 +1,16 @@
+temp/
+_version.py
+.env
+.env.*
+*.pyc
+*.exe
+*.log
+*.out
+*.ipynb_checkpoints
+*/*.ipynb_checkpoints/*
+**.idea
+**.vscod*
+**.theia
+*.swp
+*.DS_STORE
+*Thumbs.db
