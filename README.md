@@ -3,6 +3,7 @@
 Implementation of the "CCF: Fast and Scalable Connected Component Computation in MapReduce" paper with Spark. Study of its scalability on several datasets using various clusters' sizes on Databricks and Google Cloud Platform (GCP)
 
 TODO:
+- EDA data exploration
 - barplot in 3D with export in html
 - several datasets
 - databricks run time
@@ -12,6 +13,7 @@ TODO:
 - Python implementations must be provided
 - comparing the RDD and DataFrame versions conducted on graphs of increasing size
 - For small graphs use Databricks, for bigger ones use the cluster
+- commande spark-submit
 
 ## Table of content
 TODO
@@ -29,8 +31,7 @@ designed algorithms plus related global comments/description 4 points; comments 
 # Scalability Analysis
 experimental analysis, concerning in particular scalability 3 points
 
-
-# Conclusions
+# Conclusion
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 
 # Appendix
