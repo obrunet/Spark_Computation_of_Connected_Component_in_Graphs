@@ -27,12 +27,60 @@ A graph is a mathematical structure used to model pairwise relations between obj
 Many practical problems can be represented by graphs: they can be used to model many types of relations and processes in physical, biological, social and information systems.
 Finding connected components in a graph is a wellknown
 problem in a wide variety of application areas. For that purpose; in 2014, H. Kardes, S. Agrawal, X. Wang and  A. Sun published ["CCF: Fast and scalable connected component computation in MapReduce"](). Hadoop MapReduce 
-introduced a new paradigm: a programming model for processing big data sets in a parallel and in a distributed way on a cluster, it involves many read/write operations. On the contrary, by running as many operations as possible in-memory, Spark has proven to be much more faster and has become de-facto a new standard.   
-In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time.
+introduced a new paradigm: a programming model for processing big data sets in a parallel and in a distributed way on a cluster, it involves many read/write operations. On the contrary, by running as many operations as possible in-memory - few years later - Spark has proven to be much more faster and has become de-facto a new standard.   
+In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time. We've used the [Databricks community edition]() and [Google Cloud Dataproc]().
+
+![image info](./img/banner.png)
 
 
 # Description of the CCF algorithm
-a description of the adopted solution 4 points
+
+## Connected component definition
+First, let’s give a formal definition in graph theory context:
+- V is the set of vertices 
+- and E is the set of edges
+- G = (V,E) be an undirected graph
+
+__Properties__
+- C = (C1,C2, ...,Cn) is the set of disjoint connected components in this graph  
+- (C1 U C2 U ... U Cn) = V 
+- (C1 intersect C2 intersect ... intersect Cn) = void. 
+- For each connected component Ci in C, there exists a path in G between any two vertices vk and vl where (vk, vl) in Ci. 
+- Additionally, for any distinct connected component (Ci,Cj) in C, there is no path between any pair vk and vl where vk in Ci, vl in Cj.  
+
+Thus, problem of finding all connected components in a graph
+is finding the C satisfying the above conditions.
+
+## Methodology
+
+Here is how CCF works:
+- it takes as input a list of all the edges. 
+- it returns as an output the mapping (i.e a table) from each node to its corresponding componentID (i.e the smallest node id in each connected component it belongs to)
+
+![image info](./img/ccf_module.png)
+
+
+To this end, the following chain of operations take place:
+- CCF-Iterate
+- CCF-Dedup, that will run iteratively till we
+find the corresponding componentIDs for all the nodes in the
+graph.
+CCF-Iterate job generates adjacency lists AL =
+(a1, a2, ..., an) for each node v, and if the node id of
+this node vid is larger than the min node id amin in the
+adjacancy list, it first creates a pair (vid, amin) and then a
+pair for each (ai, amin) where ai 2 AL, and ai 6= amin. If
+there is only one node in AL, it means we will generate the
+pair that we have in previous iteration. However, if there is
+more than one node in AL, it means we might generate a
+pair that we didn’t have in the previous iteration, and one
+more iteration is needed. Please note that, if vid is smaller
+than amin, we do not emit any pair.
+The pseudo code of CCF-Iter
+
+This paper describes
+
+
 
 # Spark Implementation
 designed algorithms plus related global comments/description 4 points; comments to main fragments of code 4 points
