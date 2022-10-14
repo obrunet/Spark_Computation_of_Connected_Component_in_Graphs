@@ -87,15 +87,26 @@ designed algorithms plus related global comments/description 4 points; comments 
 
 ## Datasets
 
-Name	Type	Nodes	Edges	Description
-web-BerkStan	Directed	685,230	7,600,595	Web graph of Berkeley and Stanford
+| Name      | Type | Nodes     |  Edges   |   Description  | Collection  date | Dataset information
+| :---        |    :----:   |          ---: | ---: | ---: | ---: | ---: |
+| web-BerkStan      | Directed       | 685k   | 7,6M	| Web graph of Berkeley and Stanford   | 2002   | Nodes represent pages from Stanford University (stanford.edu) and directed edges represent hyperlinks between them.   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+
+
+				
+			
 web-Google	Directed	875,713	5,105,039	Web graph from Google
 web-NotreDame	Directed	325,729	1,497,134	Web graph of Notre Dame
 web-Stanford	Directed	281,903	2,312,497	Web graph of Stanford.edu
 
 Stanford web graph
-Dataset information
-Nodes represent pages from Stanford University (stanford.edu) and directed edges represent hyperlinks between them. The data was collected in 2002.
+
+ 
 
 Berkeley-Stanford web graph
 Dataset information
