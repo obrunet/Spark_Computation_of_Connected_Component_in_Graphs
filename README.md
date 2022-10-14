@@ -85,7 +85,11 @@ designed algorithms plus related global comments/description 4 points; comments 
 
 # Scalability Analysis
 
+We use datasets and Hadoop clusters with Spark both of increasing sizes.  
+
 ## Datasets
+
+[From the web site ....]()
 
 | Name      | Type | Nodes     |  Edges   |   Description  | Collection  date | 
 | :---        |    :----:   |          ---: | ---: | :--- | ---: | 
