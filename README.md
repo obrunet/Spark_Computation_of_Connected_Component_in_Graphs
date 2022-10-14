@@ -57,29 +57,26 @@ Here is how CCF works:
 - it takes as input a list of all the edges. 
 - it returns as an output the mapping (i.e a table) from each node to its corresponding componentID (i.e the smallest node id in each connected component it belongs to)
 
+To this end, the following chain of operations take place:  
+
+
 ![image info](./img/ccf_module.png)
 
+Two jobs run iteratively till we don't find any new connected peer to all the existing components:
 
-To this end, the following chain of operations take place:
-- CCF-Iterate
-- CCF-Dedup, that will run iteratively till we
-find the corresponding componentIDs for all the nodes in the
-graph.
-CCF-Iterate job generates adjacency lists AL =
-(a1, a2, ..., an) for each node v, and if the node id of
-this node vid is larger than the min node id amin in the
-adjacancy list, it first creates a pair (vid, amin) and then a
-pair for each (ai, amin) where ai 2 AL, and ai 6= amin. If
-there is only one node in AL, it means we will generate the
-pair that we have in previous iteration. However, if there is
-more than one node in AL, it means we might generate a
-pair that we didn’t have in the previous iteration, and one
-more iteration is needed. Please note that, if vid is smaller
-than amin, we do not emit any pair.
-The pseudo code of CCF-Iter
+- __CCF-Iterate__  
 
-This paper describes
+This job generates an adjacency lists AL = (a1, a2, ..., an) for each node v i.e the list of new nodes belonging to the same connected component. Each time, the node id is eventually updated in case of a new peer node with an id that is the new minimum.  
+If there is only one node in AL, it means we will generate the pair that we have in previous iteration. However, if there is more than one node in AL, it means that the process is not completed yet: an other iteration is needed.
 
+- __CCF-Dedup__   
+
+During the CCF-Iterate job, the same pair might be emitted multiple times. The second job, CCF-Dedup, just deduplicates the output of the CCF-Iterate job in order to improve the algorithm's efficiency.
+
+__How new pairs are computed ????????????__
+
+
+![image info](./img/first_iteration.png)
 
 
 # Spark Implementation
