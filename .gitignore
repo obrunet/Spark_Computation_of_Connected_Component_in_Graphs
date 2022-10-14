@@ -1,5 +1,6 @@
 temp/
 data/
+essais/
 _version.py
 .env
 .env.*
