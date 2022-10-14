@@ -87,40 +87,22 @@ designed algorithms plus related global comments/description 4 points; comments 
 
 ## Datasets
 
-| Name      | Type | Nodes     |  Edges   |   Description  | Collection  date | Dataset information
-| :---        |    :----:   |          ---: | ---: | ---: | ---: | ---: |
-| web-BerkStan      | Directed       | 685k   | 7,6M	| Web graph of Berkeley and Stanford   | 2002   | Nodes represent pages from Stanford University (stanford.edu) and directed edges represent hyperlinks between them.   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
-| XXX      | XXX       | XXX   | XXX   | XXX   | XXX   | XXX   |
+| Name      | Type | Nodes     |  Edges   |   Description  | Collection  date | 
+| :---        |    :----:   |          ---: | ---: | :--- | ---: | 
+| web-Stanford |	Directed  |	281k  |	2,3M  |	Web graph of Stanford.edu      | 2002       | 
+| web-NotreDame      | Directed |	325k  |	1,5M  | Web graph of Notre Dame       | 1999   | 
+| web-BerkStan      | Directed       | 685k   | 7,6M	| Web graph of Berkeley and Stanford   | 2002   |  
+| web-Google      | Directed |	875k	   | 5,1M   | Web graph from Google   | 2002   | 
 
 
-				
-			
-web-Google	Directed	875,713	5,105,039	Web graph from Google
-web-NotreDame	Directed	325,729	1,497,134	Web graph of Notre Dame
-web-Stanford	Directed	281,903	2,312,497	Web graph of Stanford.edu
+__Datasets information__	
 
-Stanford web graph
+Nodes represent pages and directed edges represent hyperlinks between them for 
+- Stanford University (stanford.edu) 
+- University of Notre Dame (domain nd.edu)
+- Berkely.edu and Stanford.edu domains
+- Web pages released in  by Google as a part of Google Programming Contest.
 
- 
-
-Berkeley-Stanford web graph
-Dataset information
-Nodes represent pages from berkely.edu and stanford.edu domains and directed edges represent hyperlinks between them. The data was collected in 2002.
-
-Note Dame web graph
-Dataset information
-Nodes represent pages from University of Notre Dame (domain nd.edu) and directed edges represent hyperlinks between them. The data was collected in 1999 by Albert, Jeong and Barabasi.
-
-Google web graph
-Dataset information
-Nodes represent web pages and directed edges represent hyperlinks between them. The data was released in 2002 by Google as a part of Google Programming Contest.
-
-experimental analysis, concerning in particular scalability 3 points
 
 # Conclusion
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
