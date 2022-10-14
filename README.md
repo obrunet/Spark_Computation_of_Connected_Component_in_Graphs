@@ -2,10 +2,7 @@
 
 Implementation of the "CCF: Fast and Scalable Connected Component Computation in MapReduce" paper with Spark. Study of its scalability on several datasets using various clusters' sizes on Databricks and Google Cloud Platform (GCP)
 
-TODO:
-- EDA data exploration
-- barplot in 3D with export in html
-- several datasets
+__TODO:__
 - databricks run time
 - time data loading & processing
 - use graphx of spark
@@ -22,10 +19,17 @@ TODO:
 - [Scalability Analysis]()
 - [Conclusion]()
 - [Appendix]()
-- [References]
+- [References]()
 
 --- 
 # Abstract
+A graph is a mathematical structure used to model pairwise relations between objects. It is made up of vertices (also called nodes or points) which are connected by edges (also called links or lines).  
+Many practical problems can be represented by graphs: they can be used to model many types of relations and processes in physical, biological, social and information systems.
+Finding connected components in a graph is a wellknown
+problem in a wide variety of application areas. For that purpose; in 2014, H. Kardes, S. Agrawal, X. Wang and  A. Sun published ["CCF: Fast and scalable connected component computation in MapReduce"](). Hadoop MapReduce 
+introduced a new paradigm: a programming model for processing big data sets in a parallel and in a distributed way on a cluster, it involves many read/write operations. On the contrary, by running as many operations as possible in-memory, Spark has proven to be much more faster and has become de-facto a new standard.   
+In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time.
+
 
 # Description of the CCF algorithm
 a description of the adopted solution 4 points
