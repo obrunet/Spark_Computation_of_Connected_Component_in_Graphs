@@ -28,7 +28,7 @@ Many practical problems can be represented by graphs: they can be used to model 
 Finding connected components in a graph is a wellknown
 problem in a wide variety of application areas. For that purpose; in 2014, H. Kardes, S. Agrawal, X. Wang and  A. Sun published ["CCF: Fast and scalable connected component computation in MapReduce"](). Hadoop MapReduce 
 introduced a new paradigm: a programming model for processing big data sets in a parallel and in a distributed way on a cluster, it involves many read/write operations. On the contrary, by running as many operations as possible in-memory - few years later - Spark has proven to be much more faster and has become de-facto a new standard.   
-In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time. We've used the [Databricks community edition]() and [Google Cloud Dataproc]().
+In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time. We've used the [Databricks community edition]() and [Google Cloud Dataproc]().  
 
 ![image info](./img/banner.png)
 
@@ -75,6 +75,7 @@ During the CCF-Iterate job, the same pair might be emitted multiple times. The s
 
 ## Differents steps - counting new pairs
 Let's break the whole process piece by piece using the example illustrated below:  
+
 ![image info](./img/first_iteration.png)
 
 - For each edge, the CCT-Iterate mapper emits both (k, v) and (v, k) pairs so that a should be in the adjacency list of b and vice versa. 
@@ -96,7 +97,7 @@ First we create a Spark Session:
 
 Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
 
-Spark Driver manage the whole application. It decides what part of job will be done on which Executor and also gets the information from Executors about task statuses.
+Spark Driver manage the whole application. It decides what part of job will be done on which Executor and also gets the information from Executors about task statuses.  
 
 ![image info](./img/sparksession.png)
 
@@ -112,7 +113,7 @@ Accumulators are created at driver program by calling Spark context object. Then
 
 We use the SparkSession to load the dataset into a DataFrame and the SparkContext to use it with RDD.
 
-![image info](./img/code.png) ::::::::::::::: code
+![image info](./img/code_2_load_data.png)
 
 
 ## RDD & DataFrame
@@ -123,12 +124,36 @@ The RDDs are defined as the distributed collection of the data elements without 
 
 They are considered "resilient" because the whole lineage of data transformations can be rebuild from the DAG if we loose an executor for instance.
 
+Before computation of connected components we prepare the datasets by removing multiline headers and split the two columns separated by a tabulation:
+
+![image info](./img/code_3_preprocess.png)
+
+
+
 ## Explanation of each steps
 The mapper & reducer jobs illustrated in the picture seen [previously (see "Differents steps - counting new pairs")]() correspond to the first iteration of the following graph :
 
-![image info](./img/image à faire.png) todo !!!!!!!!
+![image info](./img/graphhhhhhhhhhhhh.png)grahpppppppppppppp
 
 For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs
+
+![image info](./img/code_4_iterate_map.png)
+
+
+![image info](./img/code_5_iterate_reduce.png)
+
+
+
+![image info](./img/code_6_compute_CC.png)
+
+
+
+![image info](./img/code_7_workflow.png)
+
+
+
+
+
 
 
 
@@ -156,6 +181,10 @@ Nodes represent pages and directed edges represent hyperlinks between them for
 - University of Notre Dame (domain nd.edu)
 - Berkely.edu and Stanford.edu domains
 - Web pages released in  by Google as a part of Google Programming Contest.
+
+A for loop in the main function parse all the datasets one by one, and for each dataset the CC are computed using RDDs then Dataframes:
+
+![image info](./img/code_8_main.png)
 
 ## Computation with Databricks
 
