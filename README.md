@@ -88,11 +88,34 @@ Then we just have to calculate the number of connected components by counting th
 
 # Spark Implementation
 
-The mapper & reducer jobs illustrated above correspond to the first iteration of the following graph :
+## Spark Session and context
+Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
+
+Spark Driver manage the whole application. It decides what part of job will be done on which Executor and also gets the information from Executors about task statuses.
+
+![image info](./img/sparksession.png)
+
+Since earlier versions of Spark or Pyspark, SparkContext (JavaSparkContext for Java) is an entry point to Spark programming with RDD and to connect to Spark Cluster, Since Spark 2.0 SparkSession has been introduced and became an entry point to start programming with DataFrame and Dataset.
+
+We use the SparkSession to load the dataset into a DataFrame and the SparkContext to use it with RDD.
+
+![image info](./img/code.png) ::::::::::::::: code
+
+
+## RDD & DataFrame
+
+The RDDs are defined as the distributed collection of the data elements without any schema operating at low level. The Dataframes are defined as the distributed collection organized into named columns with a schema (but without being strongly typed like the Datasets).
+
+![image info](./img/rdd_df.png)
+
+They are considered "resilient" because the whole lineage of data transformation can be rebuild from the DAG if we loose an executor for instance.
+
+## Explanation of each steps
+The mapper & reducer jobs illustrated in the picture above correspond to the first iteration of the following graph :
 
 ![image info](./img/image à faire.png) todo !!!!!!!!
 
-For the sake of clarity, we are going to replace A by 1, B by 2 and so on, and for each steps
+For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs
 
 
 designed algorithms plus related global comments/description 4 points; comments to main fragments of code 4 points
@@ -122,6 +145,15 @@ Nodes represent pages and directed edges represent hyperlinks between them for
 - Berkely.edu and Stanford.edu domains
 - Web pages released in  by Google as a part of Google Programming Contest.
 
+## Computation with Databricks
+
+link online & appendix;;;;;;;;;;;;;;;;;;
+
+## Computation using Google Cloud Dataproc
+
+how to::::::::::::::
+commande:::::::::::::
+notebooks::::::::::::
 
 # Conclusion
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
