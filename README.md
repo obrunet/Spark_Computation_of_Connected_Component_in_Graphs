@@ -74,7 +74,7 @@ If there is only one node in AL, it means we will generate the pair that we have
 During the CCF-Iterate job, the same pair might be emitted multiple times. The second job, CCF-Dedup, just deduplicates the output of the CCF-Iterate job in order to improve the algorithm's efficiency.
 
 ## Differents steps - counting new pairs
-Let's break the whole process piece by piece using the example illustrated below:
+Let's break the whole process piece by piece using the example illustrated below:  
 ![image info](./img/first_iteration.png)
 
 - For each edge, the CCT-Iterate mapper emits both (k, v) and (v, k) pairs so that a should be in the adjacency list of b and vice versa. 
@@ -91,7 +91,7 @@ Then we just have to calculate the number of connected components by counting th
 ## Spark Session and context
 First we create a Spark Session:
 
-cooooooooooode
+![image info](./img/code_1_spark_session.png)
 
 
 Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
@@ -106,8 +106,7 @@ An accumulator is used as an excrementing variable to count new pairs:
 ```
 # initialize nb_new_pair as a spark accumulator
 nb_new_pair = sc.accumulator(0)
-
-
+...
 ```
 Accumulators are created at driver program by calling Spark context object. Then accumulators objects are passed along with other serialized tasks code to distributed executors. Task code updates accumulator values. Then Spark sends accumulators back to driver program, merges their values obtained from multuple tasks, and here we can use accumulators for whatever purpose (e.g. reporting). Important moment is that accumulators become accessible to driver code once processing stage is complete.
 

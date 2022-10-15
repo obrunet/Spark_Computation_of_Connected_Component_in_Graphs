@@ -80,7 +80,6 @@ def iterate_map_df(df):
     return df.union(df.select(col("v").alias("k"), col("k").alias("v")))
 
 
-# countnb_new_pair function to know if additional CCF iteration is needed
 def count_nb_new_pair(x):
     """Count the number of new pairs - function used in iterate_reduce_rdd in order to 
     determine if new edges were attached in a component and if the process is over or not"""
@@ -184,11 +183,10 @@ def workflow_df(path):
 def main():
     
     dataset_paths = {
-        "test_test": f"{BUCKET_INPUT_PATH}/test.txt"
-#         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
-#         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
-#         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
-#         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
+         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
+         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
+         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
+         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
     }
     computation_methods = {
         "rdd": workflow_rdd,
