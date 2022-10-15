@@ -89,6 +89,11 @@ Then we just have to calculate the number of connected components by counting th
 # Spark Implementation
 
 ## Spark Session and context
+First we create a Spark Session:
+
+cooooooooooode
+
+
 Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
 
 Spark Driver manage the whole application. It decides what part of job will be done on which Executor and also gets the information from Executors about task statuses.
@@ -96,6 +101,15 @@ Spark Driver manage the whole application. It decides what part of job will be d
 ![image info](./img/sparksession.png)
 
 Since earlier versions of Spark or Pyspark, SparkContext (JavaSparkContext for Java) is an entry point to Spark programming with RDD and to connect to Spark Cluster, Since Spark 2.0 SparkSession has been introduced and became an entry point to start programming with DataFrame and Dataset.
+
+An accumulator is used as an excrementing variable to count new pairs:
+```
+# initialize nb_new_pair as a spark accumulator
+nb_new_pair = sc.accumulator(0)
+
+
+```
+Accumulators are created at driver program by calling Spark context object. Then accumulators objects are passed along with other serialized tasks code to distributed executors. Task code updates accumulator values. Then Spark sends accumulators back to driver program, merges their values obtained from multuple tasks, and here we can use accumulators for whatever purpose (e.g. reporting). Important moment is that accumulators become accessible to driver code once processing stage is complete.
 
 We use the SparkSession to load the dataset into a DataFrame and the SparkContext to use it with RDD.
 
@@ -108,17 +122,16 @@ The RDDs are defined as the distributed collection of the data elements without 
 
 ![image info](./img/rdd_df.png)
 
-They are considered "resilient" because the whole lineage of data transformation can be rebuild from the DAG if we loose an executor for instance.
+They are considered "resilient" because the whole lineage of data transformations can be rebuild from the DAG if we loose an executor for instance.
 
 ## Explanation of each steps
-The mapper & reducer jobs illustrated in the picture above correspond to the first iteration of the following graph :
+The mapper & reducer jobs illustrated in the picture seen [previously (see "Differents steps - counting new pairs")]() correspond to the first iteration of the following graph :
 
 ![image info](./img/image à faire.png) todo !!!!!!!!
 
 For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs
 
 
-designed algorithms plus related global comments/description 4 points; comments to main fragments of code 4 points
 
 
 # Scalability Analysis
@@ -154,6 +167,11 @@ link online & appendix;;;;;;;;;;;;;;;;;;
 how to::::::::::::::
 commande:::::::::::::
 notebooks::::::::::::
+
+3 way to launch oour job
+- spark submit;;;;;;;;;;;;;;;;;;;;
+- web ui
+- notebook...........
 
 # Conclusion
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
