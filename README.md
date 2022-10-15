@@ -51,7 +51,7 @@ __Properties__
 Thus, problem of finding all connected components in a graph
 is finding the C satisfying the above conditions.
 
-## Methodology
+## Global methodology
 
 Here is how CCF works:
 - it takes as input a list of all the edges. 
@@ -62,24 +62,39 @@ To this end, the following chain of operations take place:
 
 ![image info](./img/ccf_module.png)
 
-Two jobs run iteratively till we don't find any new connected peer to all the existing components:
+Two jobs run iteratively till we don't find any new connected peer attached to the existing components:
 
 - __CCF-Iterate__  
 
-This job generates an adjacency lists AL = (a1, a2, ..., an) for each node v i.e the list of new nodes belonging to the same connected component. Each time, the node id is eventually updated in case of a new peer node with an id that is the new minimum.  
-If there is only one node in AL, it means we will generate the pair that we have in previous iteration. However, if there is more than one node in AL, it means that the process is not completed yet: an other iteration is needed.
+This job generates an adjacency lists AL = (a1, a2, ..., an) for each node v i.e the list of new nodes belonging to the same connected component. Each time, the node id is eventually updated in case of a new peer node with an id that become the new minimum.  
+If there is only one node in AL, it means we will generate the pair that we have in previous iteration. However, if there is more than one node in AL, it means that the process is not completed yet: an other iteration is needed to find other peers.
 
 - __CCF-Dedup__   
 
 During the CCF-Iterate job, the same pair might be emitted multiple times. The second job, CCF-Dedup, just deduplicates the output of the CCF-Iterate job in order to improve the algorithm's efficiency.
 
-__How new pairs are computed ????????????__
-
-
+## Differents steps - counting new pairs
+Let's break the whole process piece by piece using the example illustrated below:
 ![image info](./img/first_iteration.png)
 
+- For each edge, the CCT-Iterate mapper emits both (k, v) and (v, k) pairs so that a should be in the adjacency list of b and vice versa. 
+- In reduce phase, all the adjacent nodes are grouped together --> pairs are sorted by keys
+- All the values are parsed group by group:
+    - a first time to find the the minValue
+    - a second time to emit a new componentID if needed
+- The global NewPair counter is initialized to 0. For each component if a new peer node is found, the counter is incremented. At the end of the job, if the NewPair is still 0: it means that there is not any new edge that can be attached to the existing components: the whole computation task is over. Otherwise an other iteration is needed.
+
+Then we just have to calculate the number of connected components by counting the distinct componentIDs.
 
 # Spark Implementation
+
+The mapper & reducer jobs illustrated above correspond to the first iteration of the following graph :
+
+![image info](./img/image à faire.png) todo !!!!!!!!
+
+For the sake of clarity, we are going to replace A by 1, B by 2 and so on, and for each steps
+
+
 designed algorithms plus related global comments/description 4 points; comments to main fragments of code 4 points
 
 
