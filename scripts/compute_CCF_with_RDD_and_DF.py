@@ -107,7 +107,7 @@ def iterate_reduce_rdd(rdd):
 
 def iterate_reduce_df(df):
     """Recieve a DF alreday processed by iterate_map_df(), and for each component
-    count new pairs, the return DFrrrrrrrrrrrrrrrrrrrrrrrr"""    
+    count new pairs, the return DF transformed"""    
     global nb_new_pair
     df = df.groupBy(col("k")).agg(collect_set("v").alias("v"))\
                                             .withColumn("min", least(col("k"), array_min("v")))\
