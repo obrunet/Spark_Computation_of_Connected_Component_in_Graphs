@@ -325,9 +325,6 @@ Here we don't include in the timer the reading of the dataset. This time of read
 
 ![image info](./img/code_7_workflow.png)
 
-
-
-
 # Scalability Analysis
 
 We use datasets and Hadoop clusters with Spark both of increasing sizes.  
