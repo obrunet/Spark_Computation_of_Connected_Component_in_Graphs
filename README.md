@@ -300,11 +300,28 @@ df.show()
     |  1|  4|
     +---+---+
     
-
+The `compute_cc_rdd` and `compute_cc_df` are exactly the same.
+- the number of iteration is initialized to zero
+- a while loop takes place: if the number of pair at the beginning of the iteration remains unchanged at the end, we break in order to stop the loop. This is done with the condition `if start_pair == nb_new_pair.value:`. More precisely, the accumulator `nb_new_pair`is used as an incremental variable. If we want to compute the real number of new pairs, we have to set the values back to zero at the beginning of each iteration and check if the value is not nul at the end.
+- as explained in the CCF algorithm paper, the jobs in the loop are:
+    - iterate_map
+    - iterate_reduce
+    - and iterate_dedup (the deduplication is simply achieved using `rdd.distinct()` or `df.distinct()`)
 
 ![image info](./img/code_6_compute_CC.png)
 
+Finally, the `workflow_rdd()` and `workflow_df()` functions are just wrappers containing all the previously seen functions:
+- the dataset loading with `load_rdd(path)` and `load_df(path)`
+- its preprocessing with `preprocess_rdd(df_raw)` and `preprocess_df(df_raw)`
+- then the timer is started: `start_time = time.time()`
+- after that, the computation of the connected components is launched `df = compute_cc_df(df)` / `rdd = compute_cc_rdd(df)`
+- we print the number of connected components in the graph equal to `df.select('k').distinct().count()` (same code for RDDs
+- and finally, we dispaly the duration in seconds which is equal to the delta: `time.time() - start_time`
 
+
+__Side note__:  
+
+Here we don't include in the timer the reading of the dataset. This time of reading can be decreased with more nodes in the clusters because of the redundancy of the data / distributed storage according to the Hadoop / HDFS replication factor (by default 3). But this is actually not what we're interested in. On the contrary, the computed number of distinct components should be counted in the duration, because it is our final objective.
 
 ![image info](./img/code_7_workflow.png)
 
