@@ -107,6 +107,13 @@ An accumulator is used as an excrementing variable to count new pairs:
 ```
 # initialize nb_new_pair as a spark accumulator
 nb_new_pair = sc.accumulator(0)
+
+[...]
+
+def iterate_reduce_df(df):
+    [...]
+    nb_new_pair += df.withColumn("count", size("v")-1).select(sum("count")).collect()[0][0]
+    [...]
 ...
 ```
 Accumulators are created at driver program by calling Spark context object. Then accumulators objects are passed along with other serialized tasks code to distributed executors. Task code updates accumulator values. Then Spark sends accumulators back to driver program, merges their values obtained from multuple tasks, and here we can use accumulators for whatever purpose (e.g. reporting). Important moment is that accumulators become accessible to driver code once processing stage is complete.
@@ -115,6 +122,37 @@ We use the SparkSession to load the dataset into a DataFrame and the SparkContex
 
 ![image info](./img/code_2_load_data.png)
 
+As you can see the first few lines of headers starting with '#' are not well interpreted, and so is the separator '\t':
+
+```python
+rdd_raw = load_rdd(path)
+rdd_raw.take(6)
+```
+
+    ['# bla bla', '# header', '1\t2', '2\t3', '2\t4', '4\t5']
+
+
+The same issue occurs for with a dataframe:
+
+```python
+df_raw = load_df(path)
+df_raw.show(6)
+```
+
+    +---------+
+    |      _c0|
+    +---------+
+    |# bla bla|
+    | # header|
+    |      1	2|
+    |      2	3|
+    |      2	4|
+    |      4	5|
+    +---------+
+    only showing top 6 rows
+    
+
+
 
 ## RDD & DataFrame
 
@@ -122,12 +160,45 @@ The RDDs are defined as the distributed collection of the data elements without 
 
 ![image info](./img/rdd_df.png)
 
+Here is a more exhaustive lists of the differences:
+
+![image info](./img/rdd_df_dataset.png)
+
+
+
 They are considered "resilient" because the whole lineage of data transformations can be rebuild from the DAG if we loose an executor for instance.
 
 Before computation of connected components we prepare the datasets by removing multiline headers and split the two columns separated by a tabulation:
 
-![image info](./img/code_3_preprocess.png)
+![image info](./img/code_3_preprocess.png)  
 
+We get a clean list of (keys, values) in the RDD:
+
+```python
+rdd = preprocess_rdd(rdd_raw)
+rdd.take(10)
+```
+
+    [(1, 2), (2, 3), (2, 4), (4, 5), (6, 7), (7, 8)]
+
+and a ready-to-use table in a Dataframe:
+
+```python
+df = preprocess_df(df_raw)
+df.show(10)
+```
+
+    +---+---+
+    |  k|  v|
+    +---+---+
+    |  1|  2|
+    |  2|  3|
+    |  2|  4|
+    |  4|  5|
+    |  6|  7|
+    |  7|  8|
+    +---+---+
+    
 
 
 ## Explanation of each steps
@@ -152,6 +223,113 @@ For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so
 
 
 
+
+
+
+
+
+iterate map
+
+
+```python
+rdd = iterate_map_rdd(rdd)
+rdd.take(20)
+```
+
+
+
+
+    [(1, 2),
+     (2, 3),
+     (2, 4),
+     (4, 5),
+     (6, 7),
+     (7, 8),
+     (2, 1),
+     (3, 2),
+     (4, 2),
+     (5, 4),
+     (7, 6),
+     (8, 7)]
+
+
+
+
+```python
+df = iterate_map_df(df)
+df.show(20)
+```
+
+    +---+---+
+    |  k|  v|
+    +---+---+
+    |  1|  2|
+    |  2|  3|
+    |  2|  4|
+    |  4|  5|
+    |  6|  7|
+    |  7|  8|
+    |  2|  1|
+    |  3|  2|
+    |  4|  2|
+    |  5|  4|
+    |  7|  6|
+    |  8|  7|
+    +---+---+
+    
+
+
+iterate reduce
+
+
+```python
+rdd = iterate_reduce_rdd(rdd)
+rdd.take(16)
+```
+
+
+
+
+    [(2, 1),
+     (3, 1),
+     (3, 2),
+     (4, 2),
+     (4, 1),
+     (5, 2),
+     (5, 4),
+     (7, 6),
+     (8, 7),
+     (8, 6)]
+
+
+
+
+```python
+df = iterate_reduce_df(df)
+df.show()
+```
+
+    +---+---+
+    |  k|  v|
+    +---+---+
+    |  2|  3|
+    |  4|  5|
+    |  2|  4|
+    |  2|  5|
+    |  6|  7|
+    |  6|  8|
+    |  7|  8|
+    |  1|  2|
+    |  1|  3|
+    |  1|  4|
+    +---+---+
+    
+
+
+
+```python
+
+```
 
 
 
