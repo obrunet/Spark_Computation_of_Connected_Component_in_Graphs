@@ -331,7 +331,7 @@ We use datasets and Hadoop clusters with Spark both of increasing sizes.
 
 ## Datasets
 
-[From the web site ....]()
+Source: [Stanford Large Network Dataset Collection web site]()
 
 | Name      | Type | Nodes     |  Edges   |   Description  | Collection  date | 
 | :---        |    :----:   |          ---: | ---: | :--- | ---: | 
