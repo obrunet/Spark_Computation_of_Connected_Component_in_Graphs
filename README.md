@@ -3,8 +3,8 @@
 Implementation of the "CCF: Fast and Scalable Connected Component Computation in MapReduce" paper with Spark. Study of its scalability on several datasets using various clusters' sizes on Databricks and Google Cloud Platform (GCP)
 
 ## Table of content
-- [Abstract](# Abstract)
-- [Description of the CCF algorithm]()
+- [Abstract](#abstract)
+- [Description of the CCF algorithm](#Description-of-the-CCF-algorithm)
     - [Connected component definition]()
     - [Global methodology]()
     - [Differents steps - counting new pairs]()
