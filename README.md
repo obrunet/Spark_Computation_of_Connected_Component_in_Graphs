@@ -2,21 +2,20 @@
 
 Implementation of the "CCF: Fast and Scalable Connected Component Computation in MapReduce" paper with Spark. Study of its scalability on several datasets using various clusters' sizes on Databricks and Google Cloud Platform (GCP)
 
-__TODO:__
-- databricks run time
-- time data loading & processing
-- use graphx of spark
--  both RDD and DataFrames
-- Python implementations must be provided
-- comparing the RDD and DataFrame versions conducted on graphs of increasing size
-- For small graphs use Databricks, for bigger ones use the cluster
-- commande spark-submit
-
 ## Table of content
-- [Abstract]()
+- [Abstract](# Abstract)
 - [Description of the CCF algorithm]()
+    - [Connected component definition]()
+    - [Global methodology]()
+    - [Differents steps - counting new pairs]()
 - [Spark Implementation]()
+    - [Spark Session and context]()
+    - [RDD & DataFrame]()
+    - [Explanation of each steps]()
 - [Scalability Analysis]()
+    - [Datasets]()
+    - [Computation with Databricks]()
+    - [Computation using Google Cloud Dataproc]()
 - [Conclusion]()
 - [Appendix]()
 - [References]()
@@ -26,9 +25,9 @@ __TODO:__
 A graph is a mathematical structure used to model pairwise relations between objects. It is made up of vertices (also called nodes or points) which are connected by edges (also called links or lines).  
 Many practical problems can be represented by graphs: they can be used to model many types of relations and processes in physical, biological, social and information systems.
 Finding connected components in a graph is a wellknown
-problem in a wide variety of application areas. For that purpose; in 2014, H. Kardes, S. Agrawal, X. Wang and  A. Sun published ["CCF: Fast and scalable connected component computation in MapReduce"](). Hadoop MapReduce 
+problem in a wide variety of application areas. For that purpose; in 2014, H. Kardes, S. Agrawal, X. Wang and  A. Sun published ["CCF: Fast and scalable connected component computation in MapReduce"](https://www.cse.unr.edu/~hkardes/pdfs/ccf.pdf). Hadoop MapReduce 
 introduced a new paradigm: a programming model for processing big data sets in a parallel and in a distributed way on a cluster, it involves many read/write operations. On the contrary, by running as many operations as possible in-memory - few years later - Spark has proven to be much more faster and has become de-facto a new standard.   
-In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time. We've used the [Databricks community edition]() and [Google Cloud Dataproc]().  
+In this study, we explain the algorithm and main concepts behind CCF. Then we make a PySpark inplementatoin. And finally we analyze the scalability of our solution applied on datasets of increasing sizes. The computations are realised on a cluster also of an increasing number of nodes in order to see the evolution of the calculation time. We've used the [Databricks community edition](https://community.cloud.databricks.com/login.html) and [Google Cloud Dataproc](https://cloud.google.com/dataproc).  
 
 ![image info](./img/banner.png)
 
@@ -200,17 +199,17 @@ df.show(10)
 
 
 ## Explanation of each steps
-The mapper & reducer jobs illustrated in the picture seen [previously (see "Differents steps - counting new pairs")]() correspond to the first iteration of the following graph :
+The mapper & reducer jobs illustrated in the picture seen [previously (see "Differents steps - counting new pairs")](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark#differents-steps---counting-new-pairs) correspond to the first iteration of the following graph :
 
-![image info](./img/graphhhhhhhhhhhhh.png)grahpppppppppppppp
+![image info](./img/graphhhhhhhhhhhhh.png) #########################
 
-For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs.
+For the sake of clarity, we are going to replace the vertices A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs.
 The computation part starts with the "iterate map" function, its goal is to generate an exhaustive list of edges: 
 
 ![image info](./img/code_4_iterate_map.png)
 
 The way to proceed is the same for RDDs or Dataframe: .union is used to concatenate the original RDD or DF with the inverted one.
-The reversal is achieved by map keys / values in a different order for RDDs : `rdd.map(lambda x : (x[1], x[0]))` et by selecting the columns in a different order for DFs : `df.select(col("v").alias("k"), col("k").alias("v"))` alias allows us to rename properly columns' names:
+The reversal is achieved by mapping keys / values in a different order for RDDs : `rdd.map(lambda x : (x[1], x[0]))` et by selecting the columns in a different order for DFs : `df.select(col("v").alias("k"), col("k").alias("v"))` alias allows us to rename properly columns' names:
 
 ```python
 rdd = iterate_map_rdd(rdd)
@@ -255,7 +254,11 @@ df.show(20)
     +---+---+
     
 
+aaaaaaaaaaaaaaaaaaaaadddd comments #########################
+
 ![image info](./img/code_5_iterate_reduce.png)
+
+aaaaaaaaaaaaaaaaaaaaadddd comments #########################
 
 
 ```python
@@ -278,6 +281,7 @@ rdd.take(16)
      (8, 6)]
 
 
+aaaaaaaaaaaaaaaaaaaaadddd comments #########################
 
 
 ```python
@@ -355,30 +359,50 @@ A for loop in the main function parse all the datasets one by one, and for each 
 
 ## Computation with Databricks
 
-link online & appendix;;;;;;;;;;;;;;;;;;
+link online & appendix #########################
+- databricks run time #########################
+
 
 ## Computation using Google Cloud Dataproc
 
-how to::::::::::::::
-commande:::::::::::::
-notebooks::::::::::::
+how to #########################
+commande #########################
+notebooks #########################
 
 3 way to launch oour job
-- spark submit;;;;;;;;;;;;;;;;;;;;
-- web ui
-- notebook...........
+- spark submit #########################
+- web ui #########################
+- notebook #########################
 
 # Conclusion
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
+- use graphx of spark #########################
+- comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################
+- strenght and weakness of the algo: 
+loop
+fully connect db
+reproductibility : nb at each iteration differs ???
 
-# Appendix
-including all the code. 2 points
-code + interactive graph
+# Appendix #########################
+- [PySpark Script run on Dataproc]()
+- [Notebook of the previous PySpark script]()
+- [Notebook with the explanations in depth]()
+- Databricks notebook - [online]() & [local archive]()
+- [Visualization of the computation times (interactive graph in html)]()
 
 # References
 Paper
-- https://www.cse.unr.edu/~hkardes/pdfs/ccf.pdf
+- ["CCF: Fast and scalable connected component computation in MapReduce"](https://www.cse.unr.edu/~hkardes/pdfs/ccf.pdf)
+- [Local archive](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/archive/CCF%20Fast%20and%20Scalable%20Connected%20Component.pdf)
 
 Datasets
-- https://snap.stanford.edu/data/web-Stanford.html
-- https://snap.stanford.edu/data/web-BerkStan.html
+- [Stanford Large Network Dataset Collection web site](https://snap.stanford.edu/data/)
+    - [Web graph of Berkeley and Stanford](https://snap.stanford.edu/data/web-BerkStan.html)
+    - [Web graph from Google](https://snap.stanford.edu/data/web-Google.html)
+    - [Web graph of Notre Dame](https://snap.stanford.edu/data/web-NotreDame.html)
+    - [Web graph of Stanford.edu](https://snap.stanford.edu/data/web-Stanford.html)
+
+Documentation
+- [Latest version of Spark](https://spark.apache.org/docs/latest/)
+- [Databricks community edition](https://community.cloud.databricks.com/login.html)
+- [Google Cloud Dataproc](https://cloud.google.com/dataproc)
