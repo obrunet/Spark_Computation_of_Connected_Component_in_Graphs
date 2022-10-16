@@ -164,15 +164,13 @@ Here is a more exhaustive lists of the differences:
 
 ![image info](./img/rdd_df_dataset.png)
 
-
-
 They are considered "resilient" because the whole lineage of data transformations can be rebuild from the DAG if we loose an executor for instance.
 
 Before computation of connected components we prepare the datasets by removing multiline headers and split the two columns separated by a tabulation:
 
 ![image info](./img/code_3_preprocess.png)  
 
-We get a clean list of (keys, values) in the RDD:
+We also cast the informations to integers to get a clean list of (keys, values) in the RDD:
 
 ```python
 rdd = preprocess_rdd(rdd_raw)
@@ -206,38 +204,18 @@ The mapper & reducer jobs illustrated in the picture seen [previously (see "Diff
 
 ![image info](./img/graphhhhhhhhhhhhh.png)grahpppppppppppppp
 
-For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs
+For the sake of clarity, we are going to replace the edges A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs.
+The computation part starts with the "iterate map" function, its goal is to generate an exhaustive list of edges: 
 
 ![image info](./img/code_4_iterate_map.png)
 
-
-![image info](./img/code_5_iterate_reduce.png)
-
-
-
-![image info](./img/code_6_compute_CC.png)
-
-
-
-![image info](./img/code_7_workflow.png)
-
-
-
-
-
-
-
-
-iterate map
-
+The way to proceed is the same for RDDs or Dataframe: .union is used to concatenate the original RDD or DF with the inverted one.
+The reversal is achieved by map keys / values in a different order for RDDs : `rdd.map(lambda x : (x[1], x[0]))` et by selecting the columns in a different order for DFs : `df.select(col("v").alias("k"), col("k").alias("v"))` alias allows us to rename properly columns' names:
 
 ```python
 rdd = iterate_map_rdd(rdd)
 rdd.take(20)
 ```
-
-
-
 
     [(1, 2),
      (2, 3),
@@ -252,8 +230,7 @@ rdd.take(20)
      (7, 6),
      (8, 7)]
 
-
-
+The output is quite similar with a Dataframe but with named columns: 
 
 ```python
 df = iterate_map_df(df)
@@ -278,8 +255,7 @@ df.show(20)
     +---+---+
     
 
-
-iterate reduce
+![image info](./img/code_5_iterate_reduce.png)
 
 
 ```python
@@ -326,10 +302,25 @@ df.show()
     
 
 
+![image info](./img/code_6_compute_CC.png)
 
-```python
 
-```
+
+![image info](./img/code_7_workflow.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -383,7 +374,7 @@ notebooks::::::::::::
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 
 # Appendix
-including all the code code. 2 points
+including all the code. 2 points
 code + interactive graph
 
 # References
