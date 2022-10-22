@@ -34,7 +34,7 @@ spark_session = SparkSession \
 spark_context = spark_session.sparkContext
 
 # initialize nb_new_pair as a spark accumulator
-nb_new_pair = sc.accumulator(0)
+nb_new_pair = spark_context.accumulator(0)
 
 
 def load_rdd(path):
