@@ -365,16 +365,75 @@ link online & appendix #########################
 
 ## Computation using Google Cloud Dataproc
 
-how to #########################
-commande #########################
-notebooks #########################
+__Cluster creation__
+- create buckets with your input data and scripts
+- enable Dataproc API
+- create a cluster with the following settings:
+    - from the web UI #########################
+    - or in command line:
+```
+gcloud dataproc clusters create node-2 \
+    --enable-component-gateway \
+    --region us-central1 \
+    --zone us-central1-c \
+    --master-machine-type n1-standard-2 \
+    --master-boot-disk-size 500 \
+    --num-workers 2 \
+    --worker-machine-type n1-standard-4  \
+    --worker-boot-disk-size 500  \
+    --image-version 2.0-debian10  \
+    --optional-components JUPYTER  \
+    --max-idle 3600s  \
+    --scopes 'https://www.googleapis.com/auth/cloud-platform'  \ 
+    --project iasd4-364813
 
-3 way to launch oour job
-- spark submit #########################
-- web ui #########################
-- notebook #########################
+```
+__3 ways to launch a job__
+- notebook (for the developpement / analysis part)
+
+![image info](./img/gcp_job_notebook.png)    
+
+- Web UI  
+
+![image info](./img/gcp_job.png)  
+
+add properties to specify the excecutor's memory & cores number:
+
+![image info](./img/gcp_job_properties.png)  
+
+- the GCP equivalent `spark submit` command where shell variable starting with $ must be initialized and the `path_main.py`changed by the URL of the script in the GCS' bucket: `gs://iasd-input-data/compute_CCF_with_RDD_and_DF.py`
+
+```
+gcloud dataproc jobs submit pyspark path_main.py \
+    --cluster=$CLUSTER_NAME \
+    --region=$REGION \
+    --properties="spark.submit.deployMode"="cluster",\
+    "spark.dynamicAllocation.enabled"="true",\
+    "spark.shuffle.service.enabled"="true",\
+    "spark.executor.memory"="15g",\
+    "spark.driver.memory"="16g",\
+    "spark.executor.cores"="5"
+```
+
+Once a job is submitted, we check its status in Yarn application manager 
+
+![image info](./img/gcp_job_yarn.png)  
+
+and get into the spark's details (stages, jobs...)
+
+![image info](./img/gcp_job_spark.png)  
+
+
 
 # Conclusion
+
+
+| Name      | Master node | Worder node   |  
+| :---        |    :----:   |          ---: |  
+| Databricks |	Directed  |	-  |	-  |
+| GCP 2      | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
+ 
+
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 - use graphx of spark #########################
 - comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################
