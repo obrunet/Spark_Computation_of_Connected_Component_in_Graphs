@@ -433,22 +433,23 @@ Summary of the clusters used:
 | Databricks |	-  |	-  |	-  |
 | GCP 2      | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
  
- Summary of the calculation times:
+ Summary of the calculation times for rdd / df:
 
 | Name      | Databricks | GCP 2     |   
 | :---        |    :----:   |          :---: | 
 | web-Stanford |	-  |	-  |	-  |
-| web-NotreDame      | - |	-  |	-  | 
+| web-NotreDame      | - |	202 sec. / 147 sec.  |	-  | 
 | web-BerkStan      | -  | -   | -	|   
 | web-Google      | - |	-	   |
 
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
-- use graphx of spark #########################
 - comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################
 - strenght and weakness of the algo: 
 loop
 fully connect db
 reproductibility : nb at each iteration differs ???
+
+One also might consider using the spark's graphx librairy (only in Scala) or graph databases such as Neo4J. 
 
 # Appendix #########################
 - [PySpark Script run on Dataproc]()
