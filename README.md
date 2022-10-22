@@ -453,14 +453,14 @@ Summary of the clusters used:
 | Databricks |	-  |	-  |	-  |
 | GCP 2      | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
  
- Summary of the calculation times for rdd / df:
+ Summary of the calculation times in seconds for both resilient distributed datasets and dataframes (rdd / df):
 
 | Name      | Databricks | GCP 2     |   
 | :---        |    :----:   |          :---: | 
 | web-Stanford |	-  |	-  |	-  |
-| web-NotreDame      | 333 / 379 |	202 sec. / 147 sec.  |	-  | 
+| web-NotreDame      | 333 / 379 |	 -  |	-  | 
 | web-BerkStan      | -  | -   | -	|   
-| web-Google      | - |	-	   |
+| web-Google      | - |	497 / 425	   |
 
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 - comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################

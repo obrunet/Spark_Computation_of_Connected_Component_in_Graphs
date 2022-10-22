@@ -1,0 +1,68 @@
+22/10/22 18:33:40 INFO org.apache.spark.SparkEnv: Registering MapOutputTracker
+22/10/22 18:33:40 INFO org.apache.spark.SparkEnv: Registering BlockManagerMaster
+22/10/22 18:33:40 INFO org.apache.spark.SparkEnv: Registering BlockManagerMasterHeartbeat
+22/10/22 18:33:40 INFO org.apache.spark.SparkEnv: Registering OutputCommitCoordinator
+22/10/22 18:33:40 INFO org.sparkproject.jetty.util.log: Logging initialized @4511ms to org.sparkproject.jetty.util.log.Slf4jLog
+22/10/22 18:33:40 INFO org.sparkproject.jetty.server.Server: jetty-9.4.40.v20210413; built: 2021-04-13T20:42:42.668Z; git: b881a572662e1943a14ae12e7e1207989f218b74; jvm 1.8.0_345-b01
+22/10/22 18:33:40 INFO org.sparkproject.jetty.server.Server: Started @4674ms
+22/10/22 18:33:40 INFO org.sparkproject.jetty.server.AbstractConnector: Started ServerConnector@54160210{HTTP/1.1, (http/1.1)}{0.0.0.0:45335}
+22/10/22 18:33:41 INFO org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at node-2-m/10.128.0.12:8032
+22/10/22 18:33:42 INFO org.apache.hadoop.yarn.client.AHSProxy: Connecting to Application History server at node-2-m/10.128.0.12:10200
+22/10/22 18:33:43 INFO org.apache.hadoop.conf.Configuration: resource-types.xml not found
+22/10/22 18:33:43 INFO org.apache.hadoop.yarn.util.resource.ResourceUtils: Unable to find 'resource-types.xml'.
+22/10/22 18:33:44 INFO org.apache.hadoop.yarn.client.api.impl.YarnClientImpl: Submitted application application_1666449416260_0008
+22/10/22 18:33:45 INFO org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at node-2-m/10.128.0.12:8030
+22/10/22 18:33:48 INFO com.google.cloud.hadoop.repackaged.gcs.com.google.cloud.hadoop.gcsio.GoogleCloudStorageImpl: Ignoring exception of type GoogleJsonResponseException; verified object already exists with desired state.
+
+
+
+__________ nb of clusters' nodes: 1 - dataset: google - method: rdd __________
+22/10/22 18:33:51 WARN org.apache.hadoop.util.concurrent.ExecutorHelper: Thread (Thread[GetFileInfo #0,5,main]) interrupted: 
+java.lang.InterruptedException
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:510)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.get(FluentFuture.java:88)
+	at org.apache.hadoop.util.concurrent.ExecutorHelper.logThrowableFromAfterExecute(ExecutorHelper.java:48)
+	at org.apache.hadoop.util.concurrent.HadoopThreadPoolExecutor.afterExecute(HadoopThreadPoolExecutor.java:90)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1157)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+22/10/22 18:33:51 WARN org.apache.hadoop.util.concurrent.ExecutorHelper: Thread (Thread[GetFileInfo #1,5,main]) interrupted: 
+java.lang.InterruptedException
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:510)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.get(FluentFuture.java:88)
+	at org.apache.hadoop.util.concurrent.ExecutorHelper.logThrowableFromAfterExecute(ExecutorHelper.java:48)
+	at org.apache.hadoop.util.concurrent.HadoopThreadPoolExecutor.afterExecute(HadoopThreadPoolExecutor.java:90)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1157)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+22/10/22 18:33:51 INFO org.apache.hadoop.mapred.FileInputFormat: Total input files to process : 1
+Number of new pairs for iteration #1:	17104464
+Number of new pairs for iteration #2:	35173598
+Number of new pairs for iteration #3:	46489593
+Number of new pairs for iteration #4:	57545273
+Number of new pairs for iteration #5:	65244373
+Number of new pairs for iteration #6:	67323262
+Number of new pairs for iteration #7:	67412681
+Number of new pairs for iteration #8:	67413999
+Number of new pairs for iteration #9:	67413999
+
+No new pair, end of computation
+Nb of connected components in the graph: 2746
+Duration in seconds: 497.48615980148315
+
+
+
+__________ nb of clusters' nodes: 1 - dataset: google - method: df __________
+Number of new pairs for iteration #1:	74637779
+Number of new pairs for iteration #2:	79396230
+Number of new pairs for iteration #3:	82675002
+Number of new pairs for iteration #4:	86563456
+Number of new pairs for iteration #5:	88468779
+Number of new pairs for iteration #6:	88555562
+Number of new pairs for iteration #7:	88556880
+Number of new pairs for iteration #8:	88556880
+
+No new pair, end of computation
+Nb of connected components in the graph: 2746
+Duration in seconds: 425.52271795272827
+22/10/22 18:49:21 INFO org.sparkproject.jetty.server.AbstractConnector: Stopped Spark@54160210{HTTP/1.1, (http/1.1)}{0.0.0.0:0}
