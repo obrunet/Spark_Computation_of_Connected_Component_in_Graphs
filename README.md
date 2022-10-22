@@ -201,7 +201,7 @@ df.show(10)
 ## Explanation of each steps
 The mapper & reducer jobs illustrated in the picture seen [previously (see "Differents steps - counting new pairs")](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark#differents-steps---counting-new-pairs) correspond to the first iteration of the following graph :
 
-![image info](./img/graphhhhhhhhhhhhh.png) #########################
+![image info](./img/graph.png) 
 
 For the sake of clarity, we are going to replace the vertices A by 1, B by 2 and so on... And for each steps, let's see both the RDD and DataFrame outputs.
 The computation part starts with the "iterate map" function, its goal is to generate an exhaustive list of edges: 
@@ -425,14 +425,22 @@ and get into the spark's details (stages, jobs...)
 
 
 
-# Conclusion
+# Conclusions
 
-
+Summary of the clusters used:
 | Name      | Master node | Worder node   |  
-| :---        |    :----:   |          ---: |  
-| Databricks |	Directed  |	-  |	-  |
+| :---        |    :----:   |          :---: |  
+| Databricks |	-  |	-  |	-  |
 | GCP 2      | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
  
+ Summary of the calculation times:
+
+| Name      | Databricks | GCP 2     |   
+| :---        |    :----:   |          :---: | 
+| web-Stanford |	-  |	-  |	-  |
+| web-NotreDame      | - |	-  |	-  | 
+| web-BerkStan      | -  | -   | -	|   
+| web-Google      | - |	-	   |
 
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 - use graphx of spark #########################
