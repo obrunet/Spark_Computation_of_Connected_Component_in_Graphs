@@ -4,13 +4,6 @@
 # Author : O. Brunet & J.L. Lezaun
 # Date : Oct. 22
 # Version : final
-# Usage : 
-# ./bin/spark-submit \ 
-#       --master yarn \
-#       --deploy-mode cluster \
-#       --executor-memory 4G \
-#       --executor-cores 4 \
-#       compute_CCF_with_RDD_and_DF.py
 """
 
 import time
@@ -18,11 +11,6 @@ import pyspark
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import IntegerType
-
-
-BUCKET_INPUT_PATH = "gs://iasd-input-data"
-BUCKET_OUTPUT_PATH = "gs://iasd-output"
-NB_WORKER_NODES = 1  # ------- to be changed at each run / used in results ------- #
 
 
 # create a spark session and retrieve the spark context from it
@@ -183,11 +171,12 @@ def workflow_df(path):
 def main():
     
     dataset_paths = {
-         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
-         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
-         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
-         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
+         "notre_dame": "/FileStore/tables/web_NotreDame.txt",
+         "berk_stan": "/FileStore/tables/web_BerkStan.txt",
+         "stanford": "/FileStore/tables/web_Stanford.txt",
+         "google": "/FileStore/tables/web_Google-2.txt"
     }
+    
     computation_methods = {
         "rdd": workflow_rdd,
         "df": workflow_df
@@ -197,7 +186,7 @@ def main():
     for dataset in dataset_paths.keys():
         for method in computation_methods.keys():
             print("\n"* 3 + "_" * 10 + 
-                  f" nb of clusters' nodes: {NB_WORKER_NODES} - dataset: {dataset} - method: {method} "
+                  f" dataset: {dataset} - method: {method} "
                   + "_" * 10)
             computation_methods[method](dataset_paths[dataset])
 

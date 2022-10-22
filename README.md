@@ -254,12 +254,18 @@ df.show(20)
     +---+---+
     
 
-aaaaaaaaaaaaaaaaaaaaadddd comments #########################
+CCF-Iterate job generates adjacency lists AL = (a-1, a-2, ..., a-n) for each node v, and if the node id of this node v-id is larger than the min node id a-min in the adjacancy list, it first creates a pair (v-id, a-min) and then a pair for each (a-i, a-min) where a-i 2 AL, and a-i 6 = amin. If
+there is only one node in AL, it means we will generate the pair that we have in previous iteration.  
+
+However, if there is more than one node in AL, it means we might generate a
+pair that we didn’t have in the previous iteration, and one more iteration is needed. 
+
+Nota: if v-id is smaller than a-min, we do not emit any pair.  
+The pseudo code of CCF-Iterate provided in the original paper is quite similar to the `count_nb_new_pair()` implementation. We use this function in conjuction of a `.groupByKey()` and a  `.flatMap` applied on RDDs:
 
 ![image info](./img/code_5_iterate_reduce.png)
 
-aaaaaaaaaaaaaaaaaaaaadddd comments #########################
-
+With a dataframe, the main concept remains the same. But the way to count new pairs is a little bit different. We aggregate rows and group them by the column `k` for key in our case. We determine the min of the values with `array_min("v")`. Then we sum the count obtained with `size("v")`:
 
 ```python
 rdd = iterate_reduce_rdd(rdd)
@@ -281,8 +287,7 @@ rdd.take(16)
      (8, 6)]
 
 
-aaaaaaaaaaaaaaaaaaaaadddd comments #########################
-
+Similar results with dataframes:
 
 ```python
 df = iterate_reduce_df(df)
@@ -359,9 +364,19 @@ A for loop in the main function parse all the datasets one by one, and for each 
 
 ## Computation with Databricks
 
-link online & appendix #########################
-- databricks run time #########################
+- we create a cluster with the following settings available for community edition : 1 Driver: 15.3 GB Memory, 2 Cores, 1 DBU (A Databricks Unit is a normalized unit of processing power on the Databricks Lakehouse Platform used for measurement and pricing purposes. The number of DBUs a workload consumes is driven by processing metrics, which may include the compute resources used and the amount of data processed)  
 
+![image info](./img/databricks_cluster.png)
+
+- then we create a table on this cluster and upload our datasets  
+
+![image info](./img/databricks_table.png)
+
+- finally, we run our script in a notebook
+
+![image info](./img/databricks_notebook.png)
+
+The python script is identical to the one used on GCP: only the path of the various datasets were
 
 ## Computation using Google Cloud Dataproc
 
@@ -369,7 +384,12 @@ __Cluster creation__
 - create buckets with your input data and scripts
 - enable Dataproc API
 - create a cluster with the following settings:
-    - from the web UI #########################
+    - from the web UI with the options below:
+        - Enable component gateway
+        - Jupyter Notebook
+        - the nodes configurations
+        - a scheduled deletion of the cluster after an idle time period without submitted jobs
+        - Allow API access to all Google Cloud services in the same project.
     - or in command line:
 ```
 gcloud dataproc clusters create node-2 \
@@ -438,7 +458,7 @@ Summary of the clusters used:
 | Name      | Databricks | GCP 2     |   
 | :---        |    :----:   |          :---: | 
 | web-Stanford |	-  |	-  |	-  |
-| web-NotreDame      | - |	202 sec. / 147 sec.  |	-  | 
+| web-NotreDame      | 333 / 379 |	202 sec. / 147 sec.  |	-  | 
 | web-BerkStan      | -  | -   | -	|   
 | web-Google      | - |	-	   |
 

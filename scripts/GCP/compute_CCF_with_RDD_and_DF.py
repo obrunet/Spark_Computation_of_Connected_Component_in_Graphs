@@ -1,4 +1,11 @@
-```python
+"""
+# Title : PySpark Script to compute connected components of graph
+# Description : 
+# Author : O. Brunet & J.L. Lezaun
+# Date : Oct. 22
+# Version : final
+"""
+
 import time
 import pyspark
 from pyspark.sql import SparkSession
@@ -20,7 +27,7 @@ spark_session = SparkSession \
 spark_context = spark_session.sparkContext
 
 # initialize nb_new_pair as a spark accumulator
-nb_new_pair = sc.accumulator(0)
+nb_new_pair = spark_context.accumulator(0)
 
 
 def load_rdd(path):
@@ -66,7 +73,6 @@ def iterate_map_df(df):
     return df.union(df.select(col("v").alias("k"), col("k").alias("v")))
 
 
-# countnb_new_pair function to know if additional CCF iteration is needed
 def count_nb_new_pair(x):
     """Count the number of new pairs - function used in iterate_reduce_rdd in order to 
     determine if new edges were attached in a component and if the process is over or not"""
@@ -93,7 +99,7 @@ def iterate_reduce_rdd(rdd):
 
 def iterate_reduce_df(df):
     """Recieve a DF alreday processed by iterate_map_df(), and for each component
-    count new pairs, the return DFrrrrrrrrrrrrrrrrrrrrrrrr"""    
+    count new pairs, the return DF transformed"""    
     global nb_new_pair
     df = df.groupBy(col("k")).agg(collect_set("v").alias("v"))\
                                             .withColumn("min", least(col("k"), array_min("v")))\
@@ -170,11 +176,10 @@ def workflow_df(path):
 def main():
     
     dataset_paths = {
-        "test_test": f"{BUCKET_INPUT_PATH}/test.txt"
-#         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
-#         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
-#         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
-#         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
+         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
+         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
+         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
+         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
     }
     computation_methods = {
         "rdd": workflow_rdd,
@@ -192,259 +197,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
-    
-    
-    
-    __________ nb of clusters' nodes: 1 - dataset: test_test - method: rdd __________
-
-
-                                                                                    
-
-    Number of new pairs for iteration #1:	8
-    Number of new pairs for iteration #2:	30
-    Number of new pairs for iteration #3:	47
-
-
-                                                                                    
-
-    Number of new pairs for iteration #4:	51
-
-
-                                                                                    
-
-    Number of new pairs for iteration #5:	51
-    
-    No new pair, end of computation
-
-
-                                                                                    
-
-    Nb of connected components in the graph: 2
-    Duration in seconds: 26.928279638290405
-    
-    
-    
-    __________ nb of clusters' nodes: 1 - dataset: test_test - method: df __________
-
-
-                                                                                    
-
-    Number of new pairs for iteration #1:	55
-
-
-                                                                                    
-
-    Number of new pairs for iteration #2:	64
-    Number of new pairs for iteration #3:	68
-
-
-                                                                                    
-
-    Number of new pairs for iteration #4:	68
-    
-    No new pair, end of computation
-    Nb of connected components in the graph: 2
-    Duration in seconds: 18.64290738105774
-
-
-
-```python
-    rdd_raw = load_rdd(path)
-    rdd = preprocess_rdd(rdd_raw)
-    start_time = time.time()
-    rdd = compute_cc_rdd(rdd)
-```
-
-
-```python
-    df_raw = load_df(path)
-    df = preprocess_df(df_raw)
-    start_time = time.time()
-    df = compute_cc_df(df)
-```
-
-
-```python
-        df = iterate_map_df(df)
-        df = iterate_reduce_df(df)
-        df = df.distinct()
-```
-
-
-```python
-path = f"{BUCKET_INPUT_PATH}/test.txt"
-```
-
-file loading
-
-
-```python
-rdd_raw = load_rdd(path)
-rdd_raw.take(6)
-```
-
-
-
-
-    ['# bla bla', '# header', '1\t2', '2\t3', '2\t4', '4\t5']
-
-
-
-
-```python
-df_raw = load_df(path)
-df_raw.show(6)
-```
-
-    +---------+
-    |      _c0|
-    +---------+
-    |# bla bla|
-    | # header|
-    |      1	2|
-    |      2	3|
-    |      2	4|
-    |      4	5|
-    +---------+
-    only showing top 6 rows
-    
-
-
-dataset preprocessing
-
-
-```python
-rdd = preprocess_rdd(rdd_raw)
-rdd.take(10)
-```
-
-
-
-
-    [(1, 2), (2, 3), (2, 4), (4, 5), (6, 7), (7, 8)]
-
-
-
-
-```python
-df = preprocess_df(df_raw)
-df.show(10)
-```
-
-    +---+---+
-    |  k|  v|
-    +---+---+
-    |  1|  2|
-    |  2|  3|
-    |  2|  4|
-    |  4|  5|
-    |  6|  7|
-    |  7|  8|
-    +---+---+
-    
-
-
-iterate map
-
-
-```python
-rdd = iterate_map_rdd(rdd)
-rdd.take(20)
-```
-
-
-
-
-    [(1, 2),
-     (2, 3),
-     (2, 4),
-     (4, 5),
-     (6, 7),
-     (7, 8),
-     (2, 1),
-     (3, 2),
-     (4, 2),
-     (5, 4),
-     (7, 6),
-     (8, 7)]
-
-
-
-
-```python
-df = iterate_map_df(df)
-df.show(20)
-```
-
-    +---+---+
-    |  k|  v|
-    +---+---+
-    |  1|  2|
-    |  2|  3|
-    |  2|  4|
-    |  4|  5|
-    |  6|  7|
-    |  7|  8|
-    |  2|  1|
-    |  3|  2|
-    |  4|  2|
-    |  5|  4|
-    |  7|  6|
-    |  8|  7|
-    +---+---+
-    
-
-
-iterate reduce
-
-
-```python
-rdd = iterate_reduce_rdd(rdd)
-rdd.take(16)
-```
-
-
-
-
-    [(2, 1),
-     (3, 1),
-     (3, 2),
-     (4, 2),
-     (4, 1),
-     (5, 2),
-     (5, 4),
-     (7, 6),
-     (8, 7),
-     (8, 6)]
-
-
-
-
-```python
-df = iterate_reduce_df(df)
-df.show()
-```
-
-    +---+---+
-    |  k|  v|
-    +---+---+
-    |  2|  3|
-    |  4|  5|
-    |  2|  4|
-    |  2|  5|
-    |  6|  7|
-    |  6|  8|
-    |  7|  8|
-    |  1|  2|
-    |  1|  3|
-    |  1|  4|
-    +---+---+
-    
-
-
-
-```python
-
-```
