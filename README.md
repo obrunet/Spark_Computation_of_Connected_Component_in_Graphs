@@ -10,7 +10,7 @@ Implementation of the "CCF: Fast and Scalable Connected Component Computation in
     - [Differents steps - counting new pairs](#Differents-steps---counting-new-pairs)
 - [Spark Implementation](#Spark-Implementation)
     - [Spark Session and context](#Spark-Session-and-context)
-    - [RDD & DataFrame](#RDD-&-DataFrame)
+    - [RDD & DataFrame](##rdd--dataframe)
     - [Explanation of each steps](#Explanation-of-each-steps)
 - [Scalability Analysis](#Scalability-Analysis)
     - [Datasets](#Datasets)
