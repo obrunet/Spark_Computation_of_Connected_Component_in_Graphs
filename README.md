@@ -346,9 +346,8 @@ Source: [Stanford Large Network Dataset Collection web site](https://snap.stanfo
 | :---        |    :----:   |          ---: | ---: | :--- | ---: | 
 | web-Stanford |	Directed  |	281k  |	2,3M  |	Web graph of Stanford.edu      | 2002       | 
 | web-NotreDame      | Directed |	325k  |	1,5M  | Web graph of Notre Dame       | 1999   | 
-| web-BerkStan      | Directed       | 685k   | 7,6M	| Web graph of Berkeley and Stanford   | 2002   |  
 | web-Google      | Directed |	875k	   | 5,1M   | Web graph from Google   | 2002   | 
-
+| web-BerkStan      | Directed       | 685k   | 7,6M	| Web graph of Berkeley and Stanford   | 2002   |  
 
 __Datasets information__	
 
@@ -417,7 +416,7 @@ __3 ways to launch a job__
 
 ![image info](./img/gcp_job.png)  
 
-add properties to specify the excecutor's memory & cores number:
+we can add properties to specify the excecutor's memory & cores number (but it seems that we need to have 1 executor per node otherwise we encounter OOM especially for dataset "BerkStan"):
 
 ![image info](./img/gcp_job_properties.png)  
 
@@ -458,9 +457,9 @@ Summary of the clusters used:
 | Name      | Databricks | GCP 2     |   
 | :---        |    :----:   |          :---: | 
 | web-Stanford |	-  |	-  |	-  |
-| web-NotreDame      | 333 / 379 |	 -  |	-  | 
-| web-BerkStan      | -  | -   | -	|   
-| web-Google      | - |	497 / 425	   |
+| web-NotreDame      | 333 / 379 |	 272 / 168  |	-  | 
+| web-Google      | 1012 / 1165 |	497 / 425	   |
+| web-BerkStan      | N/A  | N/A   | N/A	|   
 
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
 - comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################

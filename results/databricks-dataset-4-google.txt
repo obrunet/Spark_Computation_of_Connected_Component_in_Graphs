@@ -1,0 +1,30 @@
+__________ dataset: google - method: rdd __________
+Number of new pairs for iteration #1:	17104464
+Number of new pairs for iteration #2:	35173598
+Number of new pairs for iteration #3:	46489593
+Number of new pairs for iteration #4:	57545273
+Number of new pairs for iteration #5:	65244373
+Number of new pairs for iteration #6:	67323262
+Number of new pairs for iteration #7:	67412681
+Number of new pairs for iteration #8:	67413999
+Number of new pairs for iteration #9:	67413999
+
+No new pair, end of computation
+Nb of connected components in the graph: 2746
+Duration in seconds: 1012.0471704006195
+
+
+
+__________ dataset: google - method: df __________
+Number of new pairs for iteration #1:	74637779
+Number of new pairs for iteration #2:	79396230
+Number of new pairs for iteration #3:	82675002
+Number of new pairs for iteration #4:	86563456
+Number of new pairs for iteration #5:	88468779
+Number of new pairs for iteration #6:	88555562
+Number of new pairs for iteration #7:	88556880
+Number of new pairs for iteration #8:	88556880
+
+No new pair, end of computation
+Nb of connected components in the graph: 2746
+Duration in seconds: 1165.4793045520782
