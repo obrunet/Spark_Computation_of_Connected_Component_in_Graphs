@@ -456,7 +456,7 @@ Summary of the clusters used:
 
 | Name      | Databricks | GCP 2     |   
 | :---        |    :----:   |          :---: | 
-| web-Stanford |	-  |	-  |	-  |
+| web-Stanford |	-  |	12872 / ?  |	-  |
 | web-NotreDame      | 333 / 379 |	 272 / 168  |	-  | 
 | web-Google      | 1012 / 1165 |	497 / 425	   |
 | web-BerkStan      | N/A  | N/A   | N/A	|   

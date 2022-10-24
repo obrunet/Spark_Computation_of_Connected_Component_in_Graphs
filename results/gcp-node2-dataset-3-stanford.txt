@@ -1,0 +1,45 @@
+22/10/22 19:07:35 INFO org.sparkproject.jetty.util.log: Logging initialized @4288ms to org.sparkproject.jetty.util.log.Slf4jLog
+22/10/22 19:07:35 INFO org.sparkproject.jetty.server.Server: jetty-9.4.40.v20210413; built: 2021-04-13T20:42:42.668Z; git: b881a572662e1943a14ae12e7e1207989f218b74; jvm 1.8.0_345-b01
+22/10/22 19:07:35 INFO org.sparkproject.jetty.server.Server: Started @4454ms
+22/10/22 19:07:35 INFO org.sparkproject.jetty.server.AbstractConnector: Started ServerConnector@371de2d2{HTTP/1.1, (http/1.1)}{0.0.0.0:45381}
+22/10/22 19:07:36 INFO org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at node-2-m/10.128.0.12:8032
+22/10/22 19:07:36 INFO org.apache.hadoop.yarn.client.AHSProxy: Connecting to Application History server at node-2-m/10.128.0.12:10200
+22/10/22 19:07:38 INFO org.apache.hadoop.conf.Configuration: resource-types.xml not found
+22/10/22 19:07:38 INFO org.apache.hadoop.yarn.util.resource.ResourceUtils: Unable to find 'resource-types.xml'.
+22/10/22 19:07:39 INFO org.apache.hadoop.yarn.client.api.impl.YarnClientImpl: Submitted application application_1666449416260_0010
+22/10/22 19:07:40 INFO org.apache.hadoop.yarn.client.RMProxy: Connecting to ResourceManager at node-2-m/10.128.0.12:8030
+22/10/22 19:07:43 INFO com.google.cloud.hadoop.repackaged.gcs.com.google.cloud.hadoop.gcsio.GoogleCloudStorageImpl: Ignoring exception of type GoogleJsonResponseException; verified object already exists with desired state.
+
+
+
+__________ nb of clusters' nodes: 1 - dataset: stanford - method: rdd __________
+22/10/22 19:07:45 INFO org.apache.hadoop.mapred.FileInputFormat: Total input files to process : 1
+Number of new pairs for iteration #1:	8063154
+Number of new pairs for iteration #2:	15274475
+Number of new pairs for iteration #3:	18094985
+Number of new pairs for iteration #4:	19985984
+Number of new pairs for iteration #5:	21988300
+Number of new pairs for iteration #6:	23362904
+Number of new pairs for iteration #7:	23788267
+Number of new pairs for iteration #8:	23856465
+Number of new pairs for iteration #9:	23895009
+Number of new pairs for iteration #10:	23926597
+Number of new pairs for iteration #11:	23947401
+Number of new pairs for iteration #12:	23955918
+Number of new pairs for iteration #13:	23958885
+Number of new pairs for iteration #14:	23959623
+Number of new pairs for iteration #15:	23959623
+
+No new pair, end of computation
+Nb of connected components in the graph: 365
+Duration in seconds: 12872.90514087677
+
+
+
+__________ nb of clusters' nodes: 1 - dataset: stanford - method: df __________
+Number of new pairs for iteration #1:	27485100
+Number of new pairs for iteration #2:	29074972
+Number of new pairs for iteration #3:	29690291
+Number of new pairs for iteration #4:	30328131
+Number of new pairs for iteration #5:	31010369
+Number of new pairs for iteration #6:	31356552
