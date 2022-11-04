@@ -16,6 +16,7 @@ Implementation of the "CCF: Fast and Scalable Connected Component Computation in
     - [Datasets](#Datasets)
     - [Computation with Databricks](#Computation-with-Databricks)
     - [Computation using Google Cloud Dataproc](#Computation-using-Google-Cloud-Dataproc)
+    - [Computation using the LAMSADE cluster](#Computation-using-the-LAMSADE-cluster)
 - [Conclusion](#Conclusion)
 - [Appendix](#Appendix)
 - [References](#References)
@@ -442,23 +443,67 @@ and get into the spark's details (stages, jobs...)
 
 ![image info](./img/gcp_job_spark.png)  
 
+## Computation using the LAMSADE cluster
 
+We add our private ssh key and connect to the master node of the LAMSADE's hadoop cluster. With the linux command line, the archives are directly downloaded using `wget`, then unzip and `put`in HDFS:
 
+![image info](./img/lamsade_01_hdfs_files.png)  
+
+This cluster comes with Spark version 3.2.0 as showned in the spark-shell: 
+
+![image info](./img/lamsade_02_spark_shell.png)  
+
+The previous script used with Google Cloud Platform is slightly modified:
+- the datasets' paths are changed with the Hadoop Distributed File System
+- the pattern "###" is used before prints in order to easily filter with `grep` the relevent informations in the `spark-submit`results:
+
+![image info](./img/lamsade_04_results_01.png)  
+
+Here is the command used to launch jobs:
+
+```
+/opt/cephfs/shared/spark-3.2.0-bin-hadoop2.7/bin/spark-submit \
+	--master spark://vmhadoopmaster.cluster.lamsade.dauphine.fr:7077 \
+	./compute_CCF_with_RDD_and_DF.py &> results.txt
+```
+spark-submit prints most of it's output to STDERR. To redirect the entire output to one file, you can use:
+```
+spark-submit something.py > results.txt 2>&1
+# or
+spark-submit something.py &> results.txt
+```
+
+_Side note_:  
+We haven't found the exact number of slaves nodes in the cluster configuration (core-site.xml): the `hosts` files and some hdfs commands are not accessibles to us with our account / low rights (for security reasons). But it seems that the whole cluster is virtualized on a single big VM with 9 slaves for spark:
+
+```
+obrunet@vmhadoopmaster:/opt/cephfs/shared/spark-3.2.0-bin-hadoop2.7/conf$ cat slaves
+vmhadoopslave1
+vmhadoopslave2
+vmhadoopslave3
+vmhadoopslave4
+vmhadoopslave5
+vmhadoopslave6
+vmhadoopslave7
+vmhadoopslave8
+vmhadoopslave9
+```
 # Conclusions
 
 Summary of the clusters used:
 | Name      | Master node | Worder node   |  
 | :---        |    :----:   |          :---: |  
-| Databricks |	-  |	-  |	-  |
-| GCP 2      | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
- 
+| Databricks |	-  |	-  |
+| GCP 2 nodes     | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
+ | Lamsade cluster |	at least 1 (N.C)  |	9 slaves (N.C)-  |
+
  Summary of the calculation times in seconds for both resilient distributed datasets and dataframes (rdd / df):
 
-| Name      | Databricks | GCP 2     |   
-| :---        |    :----:   |          :---: | 
-| web-Stanford |	-  |	12872 / ?  |	-  |
-| web-NotreDame      | 333 / 379 |	 272 / 168  |	-  | 
-| web-Google      | 1012 / 1165 |	497 / 425	   |
+| Name      | Databricks | GCP Dataproc 2 nodes   |  Lamsade cluster 9 slaves | 
+| :---        |    :----:   |          :---: | :---: | 
+| web-Stanford |	-  |	12872 / ?  |	-  |-  |
+| web-NotreDame      | 333 / 379 |	 272 / 168  |	-  |-  | 
+| web-Google      | 1012 / 1165 |	497 / 425	   |-  |
 | web-BerkStan      | N/A  | N/A   | N/A	|   
 
 comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points

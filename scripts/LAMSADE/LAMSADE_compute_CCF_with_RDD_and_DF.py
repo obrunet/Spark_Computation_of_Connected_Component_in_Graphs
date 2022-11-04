@@ -2,8 +2,12 @@
 # Title : PySpark Script to compute connected components of graph
 # Description : 
 # Author : O. Brunet & J.L. Lezaun
-# Date : Oct. 22
+# Date : Nov. 22
 # Version : final
+# Usage :
+/opt/cephfs/shared/spark-3.2.0-bin-hadoop2.7/bin/spark-submit \
+	--master spark://vmhadoopmaster.cluster.lamsade.dauphine.fr:7077 \
+	./compute_CCF_with_RDD_and_DF.py  
 """
 
 import time
@@ -12,10 +16,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import IntegerType
 
-
-BUCKET_INPUT_PATH = "gs://iasd-input-data"
-BUCKET_OUTPUT_PATH = "gs://iasd-output"
-NB_WORKER_NODES = 1  # ------- to be changed at each run / used in results ------- #
 
 
 # create a spark session and retrieve the spark context from it
@@ -37,16 +37,14 @@ def load_rdd(path):
 
 def load_df(path):
     """Recieve the path of file to load and return a DF of the dataset"""
-    return spark_session.read.format("csv").option("header","false")\
+    return spark_session.read.format("csv").option("header","false") \
                 .load(path)
 
 
 def preprocess_rdd(rdd):
     """Recieve an RDD with the raw data and return a new RDD without multilines headers
     starting with '#', and columns splitted according to the tab separator"""
-    return rdd.filter(lambda x: "#" not in x) \
-                .map(lambda x: x.split("\t")) \
-                .map(lambda x: (int(x[0]), int(x[1])))
+    return rdd.filter(lambda x: "#" not in x).map(lambda x: x.split("\t")).map(lambda x: (int(x[0]), int(x[1])))
 
 
 def preprocess_df(df):
@@ -56,7 +54,7 @@ def preprocess_df(df):
     return df.filter(f"{col_name} NOT LIKE '#%'")\
                 .withColumn('k', split(df[col_name], '\t').getItem(0)) \
                 .withColumn('v', split(df[col_name], '\t').getItem(1)) \
-                .drop(col_name)\
+                .drop(col_name) \
                 .withColumn("k",col("k").cast(IntegerType())) \
                 .withColumn("v",col("v").cast(IntegerType()))
 
@@ -101,16 +99,9 @@ def iterate_reduce_df(df):
     """Recieve a DF alreday processed by iterate_map_df(), and for each component
     count new pairs, the return DF transformed"""    
     global nb_new_pair
-    df = df.groupBy(col("k")).agg(collect_set("v").alias("v"))\
-                                            .withColumn("min", least(col("k"), array_min("v")))\
-                                            .filter((col("k")!=col('min')))
-
+    df = df.groupBy(col("k")).agg(collect_set("v").alias("v")).withColumn("min", least(col("k"), array_min("v"))).filter((col("k")!=col('min')))
     nb_new_pair += df.withColumn("count", size("v")-1).select(sum("count")).collect()[0][0]
-
-    return df.select(col("min").alias("a_min"), concat(array(col("k")), col("v")).alias("valueList"))\
-                                                    .withColumn("valueList", explode("valueList"))\
-                                                    .filter((col('a_min')!=col('valueList')))\
-                                                    .select(col('a_min').alias("k"), col('valueList').alias("v"))
+    return df.select(col("min").alias("a_min"), concat(array(col("k")), col("v")).alias("valueList")).withColumn("valueList", explode("valueList")).filter((col('a_min')!=col('valueList'))).select(col('a_min').alias("k"), col('valueList').alias("v"))
 
 
 def compute_cc_rdd(rdd):
@@ -120,14 +111,12 @@ def compute_cc_rdd(rdd):
     while True:
         nb_iteration += 1
         start_pair = nb_new_pair.value
-
         rdd = iterate_map_rdd(rdd)
         rdd = iterate_reduce_rdd(rdd)
         rdd = rdd.distinct()  # used for iterate_dedup / deduplication
-
-        print(f"Number of new pairs for iteration #{nb_iteration}:\t{nb_new_pair.value}")
+        print(f"### Number of new pairs for iteration #{nb_iteration}:\t{nb_new_pair.value}")
         if start_pair == nb_new_pair.value:
-            print("\nNo new pair, end of computation")
+            print("\n### No new pair, end of computation")
             break
     return rdd
 
@@ -139,14 +128,12 @@ def compute_cc_df(df):
     while True:
         nb_iteration += 1
         nb_pairs_start = nb_new_pair.value
-
         df = iterate_map_df(df)
         df = iterate_reduce_df(df)
         df = df.distinct()
-        
-        print(f"Number of new pairs for iteration #{nb_iteration}:\t{nb_new_pair.value}")
+        print(f"### Number of new pairs for iteration #{nb_iteration}:\t{nb_new_pair.value}")
         if nb_pairs_start == nb_new_pair.value:
-            print("\nNo new pair, end of computation")
+            print("\n### No new pair, end of computation")
             break
     return df
 
@@ -176,10 +163,11 @@ def workflow_df(path):
 def main():
     
     dataset_paths = {
-         "notre_dame": f"{BUCKET_INPUT_PATH}/web-NotreDame.txt",
-         "berk_stan": f"{BUCKET_INPUT_PATH}/web-BerkStan.txt",
-         "stanford": f"{BUCKET_INPUT_PATH}/web-Stanford.txt",
-         "google": f"{BUCKET_INPUT_PATH}/web-Google.txt"
+         "notre_dame": "hdfs:///students/iasd_20222023/obrunet/input/web-NotreDame.txt",
+         #"berk_stan": "hdfs:///students/iasd_20222023/obrunet/input/web-BerkStan.txt",
+         "stanford": "hdfs:///students/iasd_20222023/obrunet/input/web-Stanford.txt",
+         "google": "hdfs:///students/iasd_20222023/obrunet/input/web-Google.txt"
+         
     }
     computation_methods = {
         "rdd": workflow_rdd,
@@ -189,8 +177,8 @@ def main():
     # loop on all the datasets & methods (RDD or DF) using previsous dictionnaries
     for dataset in dataset_paths.keys():
         for method in computation_methods.keys():
-            print("\n"* 3 + "_" * 10 + 
-                  f" nb of clusters' nodes: {NB_WORKER_NODES} - dataset: {dataset} - method: {method} "
+            print("\n"* 3 + "### " + "_" * 10 + 
+                  f" dataset: {dataset} - method: {method} "
                   + "_" * 10)
             computation_methods[method](dataset_paths[dataset])
 

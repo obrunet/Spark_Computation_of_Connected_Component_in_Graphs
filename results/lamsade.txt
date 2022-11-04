@@ -1,0 +1,49 @@
+### __________ dataset: notre_dame - method: rdd __________
+### Number of new pairs for iteration #1:	5262658
+### Number of new pairs for iteration #2:	10558033
+### Number of new pairs for iteration #3:	14121954
+### Number of new pairs for iteration #4:	15770233
+### Number of new pairs for iteration #5:	16068354
+### Number of new pairs for iteration #6:	16088896
+### Number of new pairs for iteration #7:	16091178
+### Number of new pairs for iteration #8:	16091178
+### No new pair, end of computation
+### Nb of connected components in the graph: 1
+### Duration in seconds: 122.816810131073
+### __________ dataset: notre_dame - method: df __________
+### Number of new pairs for iteration #1:	17965498
+### Number of new pairs for iteration #2:	19297521
+### Number of new pairs for iteration #3:	20413470
+### Number of new pairs for iteration #4:	20679635
+### Number of new pairs for iteration #5:	20695613
+### Number of new pairs for iteration #6:	20697895
+### Number of new pairs for iteration #7:	20697895
+### No new pair, end of computation
+### Nb of connected components in the graph: 1
+### Duration in seconds: 114.74697828292847
+### __________ dataset: google - method: rdd __________
+### Number of new pairs for iteration #1:	17104464
+### Number of new pairs for iteration #2:	35173598
+### Number of new pairs for iteration #3:	46489593
+### Number of new pairs for iteration #4:	57545273
+### Number of new pairs for iteration #5:	65244373
+### Number of new pairs for iteration #6:	67323262
+### Number of new pairs for iteration #7:	67412681
+### Number of new pairs for iteration #8:	67413999
+### Number of new pairs for iteration #9:	67413999
+### No new pair, end of computation
+### Nb of connected components in the graph: 2746
+### Duration in seconds: 132.32494974136353
+### __________ dataset: google - method: df __________
+### Number of new pairs for iteration #1:	74637779
+### Number of new pairs for iteration #2:	79396230
+### Number of new pairs for iteration #3:	82675002
+### Number of new pairs for iteration #4:	86563456
+### Number of new pairs for iteration #5:	88468779
+### Number of new pairs for iteration #6:	88555562
+### Number of new pairs for iteration #7:	88556880
+### Number of new pairs for iteration #8:	88556880
+### No new pair, end of computation
+### Nb of connected components in the graph: 2746
+### Duration in seconds: 222.31655526161194
+
