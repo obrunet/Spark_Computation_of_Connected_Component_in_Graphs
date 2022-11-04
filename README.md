@@ -537,7 +537,6 @@ One also might consider using the spark's graphx librairy (not maintained anymor
 - [Notebook with the explanations in depth](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/notebooks/gcp%20explanations%20in%20details.ipynb)
 - Databricks notebook - [online](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/Databricks/DATABRICKS_compute_CCF_with_RDD_and_DF.py) & [local archive](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/Databricks/databricks_python_notebook.dbc)
 - [PySpark Script run on the LAMSADE cluster](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/LAMSADE/LAMSADE_compute_CCF_with_RDD_and_DF.py)
-- [Visualization of the computation times (interactive graph in html)]() #########################
 
 # References
 Paper
