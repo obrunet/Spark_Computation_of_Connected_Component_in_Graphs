@@ -495,31 +495,44 @@ Summary of the clusters used:
 | :---        |    :----:   |          :---: |  
 | Databricks |	-  |	-  |
 | GCP 2 nodes     | 1 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)  |	2 x n1-standard-2 (2 vCPU / 7.5GB RAM / 500GB disk)   | 
- | Lamsade cluster |	at least 1 (N.C)  |	9 slaves (N.C)-  |
+ | Lamsade cluster |	at least 1 MN (conf. N.C)  |	9 slaves (conf. N.C)  |
 
  Summary of the calculation times in seconds for both resilient distributed datasets and dataframes (rdd / df):
 
-| Name      | Databricks | GCP Dataproc 2 nodes   |  Lamsade cluster 9 slaves | 
+| Name      | Databricks Com. Ed. | GCP Dataproc 2 nodes   |  Lamsade cluster 9 slaves | 
 | :---        |    :----:   |          :---: | :---: | 
-| web-Stanford |	-  |	12872 / ?  |	-  |-  |
-| web-NotreDame      | 333 / 379 |	 272 / 168  |	-  |-  | 
-| web-Google      | 1012 / 1165 |	497 / 425	   |-  |
-| web-BerkStan      | N/A  | N/A   | N/A	|   
+| web-Stanford |	(*)  |	12872 / 10565  |	6375 / 6259  |
+| web-NotreDame      | 333 / 379 |	 272 / 168  |	122 / 114  |
+| web-Google      | 1012 / 1165 |	497 / 425	   | 132 / 222  |
+| web-BerkStan      | N/A (**)  | N/A (**)   | N/A (**)	|   
 
-comments about the experimental analysis outlining weak and strong points of the algorithms. 3 points
-- comparing the RDD and DataFrame versions conducted on graphs of increasing size #########################
-- strenght and weakness of the algo: 
-loop
-fully connect db
-reproductibility : nb at each iteration differs ???
+(*) lasts too long: result not recorded  
+(**) the web-BerkStan is finally a single connected component with too many vertices with regard to the number of edges (unfortunately this couldn't be guessed before the end of the computation!): it causes `out of memory` errors occuring in executors for the GCP Dataproc and `no space left on the device` problems for the driver of the LAMSADE cluster.
 
-One also might consider using the spark's graphx librairy (only in Scala) or graph databases such as Neo4J. 
+__Comments about this experimental analysis__
+- Even if RDDs operate at a lower level - our first intuition was that computation with RDDs will take less time - this is not always true. In the table above there are few cases where using DFs lead to faster results.  
+- The Databricks community edition use a single VM, while the Google Cloud involve 2 worker nodes and the LAMSADE cluster 9 slaves: we can clearly see that with more nodes, the computation takes less time (whether with RDDs or DFs). The parallelism of operations such as map, filter or reduce... significantly improves performances.  
+- One can notice that if you run the same script twice in the same conditions i.e on the same dataset with the same cluster, you can get slightly different results: this can be a consequence of 
+    - shared ressources for the LAMSADE cluster
+    - we could assume the way partitions are dispatched can have an impact: if the same connected component is computed on several nodes because each slave is dealing with different edges (of the same component), it will take more time than after a shuffle. So graph with very few connected components might be affected (see the web-BerkStan dataset) 
+
+__Strenghts and weaknesses of the algorithm__
+  
+- it make use of a loop  
+- it is not suited for fully connected db
+- reproductibility : nb at each iteration differs
+- a complex problem, better solution, can be parallelized
+
+__Alternative solutions__
+
+One also might consider using the spark's graphx librairy (not maintained anymore & only in Scala) or graph databases such as Neo4J or specific librairies like NetworkX. 
 
 # Appendix #########################
 - [PySpark Script run on Dataproc]()
 - [Notebook of the previous PySpark script]()
 - [Notebook with the explanations in depth]()
 - Databricks notebook - [online]() & [local archive]()
+- [PySpark Script run on the LAMSADE cluster]()
 - [Visualization of the computation times (interactive graph in html)]()
 
 # References
