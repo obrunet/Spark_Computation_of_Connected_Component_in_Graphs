@@ -507,14 +507,14 @@ Recap of the clusters used:
 | web-BerkStan      | N/A (**)  | N/A (**)   | N/A (**)	|   
 
 (*) lasts too long: result not recorded  
-(**) the web-BerkStan is finally a single connected component with too many vertices with regard to the number of edges (unfortunately this couldn't be guessed before the end of the computation!): it causes `out of memory` errors occuring in executors for the GCP Dataproc and `no space left on the device` problems for the driver of the LAMSADE cluster.
+(**) the web-BerkStan is finally a single connected component with too many edges with regard to the number of vertices (unfortunately this couldn't be guessed before the end of the computation!): it causes `out of memory` errors occuring in executors for the GCP Dataproc and `no space left on the device` problems for the driver of the LAMSADE cluster.
 
 __Comments about this experimental analysis__
 - Even if RDDs operate at a lower level - our first intuition was that computation with RDDs will take less time - this is not always true. In the table above there are few cases where using DFs lead to faster results.  
 - The Databricks community edition use a single VM, while the Google Cloud involve 2 worker nodes and the LAMSADE cluster 9 slaves: we can clearly see that with more nodes, the computation takes less time (whether with RDDs or DFs). The parallelism of operations such as map, filter or reduce... significantly improves performances.  
 - One can notice that if you run the same script twice in the same conditions i.e on the same dataset with the same cluster, you can get slightly different results: this can be a consequence of 
     - shared ressources for the LAMSADE cluster
-    - we could assume the way partitions are dispatched can have an impact: if the same connected component is computed on several nodes because each slave is dealing with different edges (of the same component), it will take more time than after a shuffle. So graph with very few connected components might be affected (see the web-BerkStan dataset) 
+    - we could assume the way partitions are dispatched can have an impact: if the same connected component is computed on several nodes because each slave is dealing with different vertices (of the same component), it will take more time than after a shuffle. So graph with very few connected components might be affected (see the web-BerkStan dataset) 
 
 __Strenghts and weaknesses of the algorithm__
   
@@ -527,13 +527,12 @@ __Alternative solutions__
 
 One also might consider using the spark's graphx librairy (not maintained anymore & only in Scala) or graph databases such as Neo4J or specific librairies like NetworkX. 
 
-# Appendix #########################
-- [PySpark Script run on Dataproc]()
-- [Notebook of the previous PySpark script]()
-- [Notebook with the explanations in depth]()
-- Databricks notebook - [online]() & [local archive]()
-- [PySpark Script run on the LAMSADE cluster]()
-- [Visualization of the computation times (interactive graph in html)]()
+# Appendix 
+- [PySpark Script run on GCP Dataproc](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/GCP/GCP_compute_CCF_with_RDD_and_DF.py)
+- [Notebook with the explanations in depth](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/notebooks/gcp%20explanations%20in%20details.ipynb)
+- Databricks notebook - [online](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/Databricks/DATABRICKS_compute_CCF_with_RDD_and_DF.py) & [local archive](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/Databricks/databricks_python_notebook.dbc)
+- [PySpark Script run on the LAMSADE cluster](https://github.com/obrunet/Computation_of_Connected_Component_in_Graphs_with_Spark/blob/main/scripts/LAMSADE/LAMSADE_compute_CCF_with_RDD_and_DF.py)
+- [Visualization of the computation times (interactive graph in html)]() #########################
 
 # References
 Paper
