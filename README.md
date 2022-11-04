@@ -488,9 +488,9 @@ vmhadoopslave7
 vmhadoopslave8
 vmhadoopslave9
 ```
-# Conclusions
+# Conclusion
 
-Summary of the clusters used:
+Recap of the clusters used:
 | Name      | Master node | Worder node   |  
 | :---        |    :----:   |          :---: |  
 | Databricks |	-  |	-  |
@@ -518,10 +518,10 @@ __Comments about this experimental analysis__
 
 __Strenghts and weaknesses of the algorithm__
   
-- it make use of a loop  
-- it is not suited for fully connected db
-- reproductibility : nb at each iteration differs
-- a complex problem, better solution, can be parallelized
+- It makes use of a loop, which is not in accordance with the distributed processing paradigm but to our knowledge we can't proceed without any loop. 
+- It is not suited for "highly" connected graphs with a high ratio of vertices compared to edges.
+- As stated previously, the computation time is influenced by the way the data / partitions are splitted among nodes of the cluster. The same run can lead to a different number of iterations, the lack of reproductibility could also be an issue.
+- Nevertheless, finding connected components in graph remains a complex task, the CCF algorithm has proven to be a robust solution, further more a solution that can be parallelized.
 
 __Alternative solutions__
 
