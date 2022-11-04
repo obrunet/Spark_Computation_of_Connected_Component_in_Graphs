@@ -509,6 +509,11 @@ Recap of the clusters used:
 (*) lasts too long: result not recorded  
 (**) the web-BerkStan is finally a single connected component with too many edges with regard to the number of vertices (unfortunately this couldn't be guessed before the end of the computation!): it causes `out of memory` errors occuring in executors for the GCP Dataproc and `no space left on the device` problems for the driver of the LAMSADE cluster.
 
+__Comparison of results__
+
+![image info](./results/viz_all.png)    
+
+
 __Comments about this experimental analysis__
 - Even if RDDs operate at a lower level - our first intuition was that computation with RDDs will take less time - this is not always true. In the table above there are few cases where using DFs lead to faster results.  
 - The Databricks community edition use a single VM, while the Google Cloud involve 2 worker nodes and the LAMSADE cluster 9 slaves: we can clearly see that with more nodes, the computation takes less time (whether with RDDs or DFs). The parallelism of operations such as map, filter or reduce... significantly improves performances.  
